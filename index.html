@@ -1,0 +1,3582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SkillSwap</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#f5f8ff;
+  --card:#fff;
+  --ink:#0b1b3b;
+  --mut:#5b6b8c;
+  --pri:#2457f5;
+  --navy:#0a1f55;
+  --line:#e2e8f5;
+  --ok:#12a36b;
+  --warn:#d98a0b;
+  --bad:#d64545;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px)
+}
+
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme=light]){
+    --bg:#0a1228;
+    --card:#111c3a;
+    --ink:#e8eeff;
+    --mut:#9aabd0;
+    --line:#223158
+  }
+}
+
+:root[data-theme=dark]{
+  --bg:#0a1228;
+  --card:#111c3a;
+  --ink:#e8eeff;
+  --mut:#9aabd0;
+  --line:#223158
+}
+
+*{box-sizing:inherit}
+
+html{
+  scroll-padding-top:env(safe-area-inset-top,0px)
+}
+
+body{
+  margin:0;
+  font:15px/1.55 'Plus Jakarta Sans',system-ui,sans-serif;
+  background:var(--bg);
+  color:var(--ink)
+}
+
+a{
+  color:inherit;
+  text-decoration:none
+}
+
+button,input,select,textarea{
+  font:inherit;
+  color:inherit
+}
+
+:focus-visible{
+  outline:3px solid #7aa2ff;
+  outline-offset:2px
+}
+
+.wrap{
+  max-width:1100px;
+  margin:auto;
+  padding:0 20px
+}
+
+nav.top{
+  position:sticky;
+  top:env(safe-area-inset-top,0px);
+  z-index:20;
+  background:var(--card);
+  border-bottom:1px solid var(--line)
+}
+
+nav.top .wrap{
+  display:flex;
+  align-items:center;
+  gap:20px;
+  height:60px
+}
+
+.logo{
+  font-weight:800;
+  font-size:20px;
+  display:flex;
+  gap:8px;
+  align-items:center;
+  cursor:pointer
+}
+
+.logo i{
+  width:28px;
+  height:28px;
+  border-radius:9px;
+  background:linear-gradient(135deg,var(--pri),#19b6ff);
+  display:grid;
+  place-items:center;
+  color:#fff;
+  font-style:normal
+}
+
+.sp{flex:1}
+
+.links{
+  display:flex;
+  gap:18px;
+  color:var(--mut)
+}
+
+.links a{
+  cursor:pointer
+}
+
+.btn{
+  border:0;
+  border-radius:12px;
+  padding:10px 18px;
+  font-weight:700;
+  cursor:pointer;
+  background:var(--pri);
+  color:#fff;
+  transition:.2s
+}
+
+.btn:hover{
+  transform:translateY(-1px);
+  box-shadow:0 8px 20px #2457f544
+}
+
+.btn.o{
+  background:transparent;
+  color:var(--pri);
+  border:1.5px solid var(--pri)
+}
+
+.btn.s{
+  padding:6px 12px;
+  font-size:13px
+}
+
+.btn.g{
+  background:#e7ecfb;
+  color:var(--navy)
+}
+
+.btn.r{
+  background:var(--bad)
+}
+
+.hero{
+  background:linear-gradient(160deg,var(--navy),#1b4ad8);
+  color:#fff;
+  padding:70px 0
+}
+
+.hero .wrap{
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:30px;
+  align-items:center
+}
+
+h1{
+  font-size:clamp(32px,5vw,54px);
+  line-height:1.08;
+  margin:0 0 14px;
+  letter-spacing:-1px
+}
+
+h2{
+  font-size:28px;
+  margin:0 0 6px
+}
+
+h3{
+  margin:0 0 8px
+}
+
+.hero p{
+  color:#cfdcff;
+  max-width:480px
+}
+
+.hero .btn.o{
+  color:#fff;
+  border-color:#fff
+}
+
+.sec{
+  padding:56px 0
+}
+
+.sub{
+  color:var(--mut);
+  margin:0 0 24px
+}
+
+.grid{
+  display:grid;
+  gap:16px;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr))
+}
+
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:18px
+}
+
+.ic{
+  width:42px;
+  height:42px;
+  border-radius:12px;
+  background:#e7efff;
+  display:grid;
+  place-items:center;
+  font-size:20px;
+  margin-bottom:10px
+}
+
+.stat b{
+  font-size:30px;
+  display:block;
+  color:var(--pri)
+}
+
+.chip{
+  display:inline-block;
+  padding:3px 10px;
+  border-radius:99px;
+  background:#e7efff;
+  color:#1c3fb0;
+  font-size:12px;
+  font-weight:700;
+  margin:2px 4px 2px 0
+}
+
+.chip.ok{
+  background:#d9f5e9;
+  color:#0b7a50
+}
+
+.chip.w{
+  background:#fff0d1;
+  color:#9a6200
+}
+
+.chip.b{
+  background:#fde0e0;
+  color:#a52b2b
+}
+
+details{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:14px 16px;
+  margin-bottom:10px
+}
+
+summary{
+  font-weight:700;
+  cursor:pointer
+}
+
+footer{
+  background:var(--navy);
+  color:#b9c8f0;
+  padding:36px 0
+}
+
+footer a{
+  margin-right:16px;
+  cursor:pointer
+}
+
+.auth{
+  max-width:440px;
+  margin:40px auto;
+  padding:24px 20px
+}
+
+.tabs{
+  display:flex;
+  background:#e7ecfb;
+  border-radius:12px;
+  padding:4px;
+  margin-bottom:18px
+}
+
+.tabs button{
+  flex:1;
+  border:0;
+  background:none;
+  padding:9px;
+  border-radius:9px;
+  font-weight:700;
+  cursor:pointer;
+  color:#33436b
+}
+
+.tabs .on{
+  background:#fff;
+  color:var(--pri);
+  box-shadow:0 2px 6px #0002
+}
+
+label{
+  display:block;
+  font-weight:700;
+  font-size:13px;
+  margin:12px 0 4px
+}
+
+input,select,textarea{
+  width:100%;
+  padding:10px 12px;
+  border:1.5px solid var(--line);
+  border-radius:10px;
+  background:var(--card)
+}
+
+input.bad{
+  border-color:var(--bad)
+}
+
+.err{
+  color:var(--bad);
+  font-size:12px;
+  min-height:16px
+}
+
+.row{
+  display:flex;
+  gap:10px;
+  align-items:center
+}
+
+.row>*{
+  flex:1
+}
+
+.row .n{
+  flex:none
+}
+
+.shell{
+  display:grid;
+  grid-template-columns:230px 1fr;
+  min-height:calc(100vh - 60px)
+}
+
+.side{
+  background:var(--card);
+  border-right:1px solid var(--line);
+  padding:14px
+}
+
+.side a{
+  display:block;
+  padding:10px 12px;
+  border-radius:10px;
+  cursor:pointer;
+  color:var(--mut);
+  font-weight:500
+}
+
+.side a.on,
+.side a:hover{
+  background:#e7efff;
+  color:var(--pri)
+}
+
+.main{
+  padding:22px;
+  min-width:0
+}
+
+.prof{
+  display:flex;
+  gap:12px
+}
+
+.av{
+  width:46px;
+  height:46px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  color:#fff;
+  font-weight:800;
+  flex:none;
+  position:relative
+}
+
+.on1:after{
+  content:'';
+  position:absolute;
+  right:0;
+  bottom:0;
+  width:11px;
+  height:11px;
+  border-radius:50%;
+  background:var(--ok);
+  border:2px solid var(--card)
+}
+
+.bar{
+  height:8px;
+  background:#e1e8fa;
+  border-radius:9px;
+  overflow:hidden
+}
+
+.bar i{
+  display:block;
+  height:100%;
+  background:linear-gradient(90deg,var(--pri),#19b6ff)
+}
+
+.score{
+  margin-left:auto;
+  font-weight:800;
+  color:var(--ok);
+  text-align:right
+}
+
+.chat{
+  display:grid;
+  grid-template-columns:240px 1fr;
+  height:520px;
+  padding:0;
+  overflow:hidden
+}
+
+.cl{
+  border-right:1px solid var(--line);
+  overflow:auto
+}
+
+.cl div{
+  padding:12px;
+  cursor:pointer;
+  border-bottom:1px solid var(--line)
+}
+
+.cl .on{
+  background:#e7efff
+}
+
+.cm{
+  display:flex;
+  flex-direction:column
+}
+
+.msgs{
+  flex:1;
+  overflow:auto;
+  padding:14px;
+  display:flex;
+  flex-direction:column;
+  gap:8px
+}
+
+.m{
+  max-width:75%;
+  padding:9px 13px;
+  border-radius:14px;
+  background:#e7ecfb;
+  color:#0b1b3b
+}
+
+.m.me{
+  align-self:flex-end;
+  background:var(--pri);
+  color:#fff
+}
+
+.m small{
+  display:block;
+  opacity:.6;
+  font-size:10px
+}
+
+table{
+  width:100%;
+  border-collapse:collapse
+}
+
+td,th{
+  text-align:left;
+  padding:9px;
+  border-bottom:1px solid var(--line)
+}
+
+.star{
+  cursor:pointer;
+  font-size:26px;
+  color:#c9d3ee;
+  background:none;
+  border:0
+}
+
+.star.on{
+  color:#f5b301
+}
+
+#bot{
+  position:fixed;
+  right:18px;
+  bottom:calc(18px + env(safe-area-inset-bottom,0px));
+  z-index:50
+}
+
+#bt{
+  width:54px;
+  height:54px;
+  border-radius:50%;
+  border:0;
+  background:var(--pri);
+  color:#fff;
+  font-size:24px;
+  cursor:pointer;
+  box-shadow:0 8px 24px #2457f566
+}
+
+#bw{
+  position:absolute;
+  right:0;
+  bottom:66px;
+  width:min(320px,calc(100vw - 36px));
+  height:420px;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:16px;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  box-shadow:0 20px 50px #0003;
+  transform:scale(.9) translateY(14px);
+  opacity:0;
+  pointer-events:none;
+  transform-origin:bottom right;
+  transition:.22s
+}
+
+#bw.open{
+  transform:none;
+  opacity:1;
+  pointer-events:auto
+}
+
+#bw header{
+  background:var(--navy);
+  color:#fff;
+  padding:12px 14px;
+  display:flex;
+  justify-content:space-between;
+  font-weight:700
+}
+
+#bw header button{
+  background:none;
+  border:0;
+  color:#fff;
+  cursor:pointer;
+  font-size:18px
+}
+
+#bm{
+  flex:1;
+  overflow:auto;
+  padding:12px;
+  display:flex;
+  flex-direction:column;
+  gap:8px
+}
+
+#bq{
+  padding:0 12px 8px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px
+}
+
+#bq button{
+  border:1px solid var(--pri);
+  background:none;
+  color:var(--pri);
+  border-radius:99px;
+  padding:4px 10px;
+  font-size:12px;
+  cursor:pointer
+}
+
+#bf{
+  display:flex;
+  gap:6px;
+  padding:10px;
+  border-top:1px solid var(--line)
+}
+
+#toast{
+  position:fixed;
+  left:50%;
+  bottom:90px;
+  transform:translateX(-50%);
+  background:var(--ink);
+  color:var(--bg);
+  padding:10px 16px;
+  border-radius:10px;
+  opacity:0;
+  transition:.3s;
+  z-index:60;
+  pointer-events:none
+}
+
+#toast.on{
+  opacity:1
+}
+
+@media(max-width:800px){
+  .hero .wrap,
+  .shell,
+  .chat{
+    grid-template-columns:1fr
+  }
+
+  .links{
+    display:none
+  }
+
+  .side{
+    display:flex;
+    overflow-x:auto;
+    gap:4px;
+    border-right:0;
+    border-bottom:1px solid var(--line)
+  }
+
+  .side a{
+    white-space:nowrap
+  }
+
+  .chat{
+    height:auto
+  }
+
+  .cl{
+    display:flex;
+    overflow-x:auto
+  }
+
+  .cl div{
+    min-width:150px
+  }
+
+  .cm{
+    height:400px
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  *{
+    transition:none!important;
+    animation:none!important
+  }
+}
+</style>
+</head>
+
+<body>
+
+<nav class="top">
+  <div class="wrap">
+    <a class="logo" onclick="go('home')">
+      <i>⇄</i>SkillSwap
+    </a>
+
+    <div class="links">
+      <a onclick="go('home','how')">How it works</a>
+      <a onclick="go('home','skills')">Skills</a>
+      <a onclick="go('home','faq')">FAQ</a>
+    </div>
+
+    <div class="sp"></div>
+    <span id="navr"></span>
+  </div>
+</nav>
+
+<div id="app"></div>
+
+<div id="bot">
+  <div id="bw">
+    <header>
+      SkillSwap Assistant
+      <button onclick="bt()" aria-label="Minimize">—</button>
+    </header>
+
+    <div id="bm"></div>
+    <div id="bq"></div>
+
+    <form id="bf">
+      <input id="bi" placeholder="Type a message" aria-label="Message">
+      <button class="btn s">Send</button>
+    </form>
+  </div>
+
+  <button id="bt" onclick="bt()" aria-label="Open chat">💬</button>
+</div>
+
+<div id="toast"></div>
+
+<script>
+
+const $=s=>document.querySelector(s);
+
+const C=[
+  '#2457f5',
+  '#0e9f8e',
+  '#8a4fff',
+  '#e0561f',
+  '#d6336c',
+  '#1a8cd8',
+  '#5a7d1a',
+  '#b8741a'
+];
+
+let P=[];
+let ME=null;
+let R=[];
+let RV=[];
+let CH={};
+let requirements=[];
+let applications=[];
+let cur=null;
+let rate=0;
+let role='student';
+let authToken=localStorage.getItem('skillswapToken')||'';
+
+const esc=value=>String(value??'').replace(/[&<>"']/g,char=>({
+  '&':'&amp;',
+  '<':'&lt;',
+  '>':'&gt;',
+  '"':'&quot;',
+  "'":'&#39;'
+}[char]));
+
+async function api(url,options={}){
+  const headers={...(options.headers||{})};
+  if(authToken)
+    headers.Authorization='Bearer '+authToken;
+  if(options.body)
+    headers['Content-Type']='application/json';
+
+  const response=await fetch(url,{
+    ...options,
+    headers,
+    body:options.body?JSON.stringify(options.body):undefined
+  });
+  const data=await readResponse(response);
+
+  if(!response.ok){
+    if(response.status===401){
+      authToken='';
+      localStorage.removeItem('skillswapToken');
+      ME=null;
+    }
+    throw new Error(responseError(response,data,'The request could not be completed.'));
+  }
+
+  return data;
+}
+
+async function readResponse(response){
+  const text=(await response.text()).trim();
+  if(!text)
+    return {};
+  try{
+    const data=JSON.parse(text);
+    return data&&typeof data==='object'?data:{error:text};
+  }catch{
+    return {error:text};
+  }
+}
+
+function responseError(response,data,fallback){
+  const detail=typeof data.error==='string'?data.error.trim():'';
+  if(detail&&!(response.status===403&&/^forbidden\.?$/i.test(detail)))
+    return detail;
+  if(response.status===403){
+    return `${fallback} (403 Forbidden). Make sure this request reaches the SkillSwap backend and that public Google OAuth routes are not blocked by authentication middleware.`;
+  }
+  return `${fallback} (HTTP ${response.status}${response.statusText?' '+response.statusText:''}).`;
+}
+
+async function configureGoogleButton(){
+  const button=$('#googleBtn');
+  const message=$('#googleError');
+  if(!button)
+    return;
+  try{
+    const response=await fetch('/api/auth/google');
+    const config=await readResponse(response);
+    if(!response.ok)
+      throw new Error(responseError(response,config,'Could not load Google sign-in configuration.'));
+    if(!config.configured){
+      button.disabled=true;
+      if(message)
+        message.textContent='Google sign-in is not configured yet. Set GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, and GOOGLE_CALLBACK_URL in the server .env file, then restart the server.';
+      return;
+    }
+    button.disabled=false;
+  }catch(error){
+    button.disabled=true;
+    if(message)
+      message.textContent=error.message;
+  }
+}
+
+function startGoogleSignIn(){
+  const button=$('#googleBtn');
+  button.disabled=true;
+  location.assign('/auth/google?role='+encodeURIComponent(role));
+}
+
+function fromApiUser(user){
+  return {
+    ...user,
+    n:user.name,
+    s:user.teaches?.[0]||user.wants?.[0]||'SkillSwap member',
+    t:user.teaches||[],
+    l:user.wants||[],
+    m:user.learningMode||'Online',
+    a:user.availability||'Evenings',
+    lv:user.level||'Beginner',
+    r:user.rating||0,
+    loc:user.location||'',
+    d:user.bio||'',
+    profilePhoto:user.profilePhoto||'',
+    matchScore:user.match||0,
+    matchReasons:user.reasons||[]
+  };
+}
+
+async function loadPeople(query=''){
+  const data=await api('/api/users'+(query?'?'+query:''));
+  P=data.users.map(fromApiUser);
+  return P;
+}
+
+const ini=n=>n.split(' ').map(x=>x[0]).join('');
+
+const av=(n,i,on,photo='')=>`
+<div class="av ${on?'on1':''}" style="background:${C[i%8]}">
+${photo?`<img src="${esc(photo)}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:inherit">`:ini(n)}
+</div>
+`;
+
+function match(p){
+  const teaches=ME?.teaches||ME?.t||[];
+  const wants=ME?.wants||ME?.l||[];
+  let a=p.t.filter(x=>wants.includes(x)).length;
+  let b=p.l.filter(x=>teaches.includes(x)).length;
+
+  let w=[];
+
+  let s=
+    30+
+    Math.min(a,2)*15+
+    Math.min(b,2)*10+
+    (p.m==(ME?.learningMode||ME?.m)||p.m=='Both'?7:0)+
+    (p.a==(ME?.availability||ME?.a)?8:0);
+
+  if(a)
+    w.push(
+      'Teaches '+
+      p.t.filter(x=>wants.includes(x)).join(', ')+
+      ' you want'
+    );
+
+  if(b)
+    w.push(
+      'Wants '+
+      p.l.filter(x=>teaches.includes(x)).join(', ')+
+      ' you offer'
+    );
+
+  if(p.m==(ME?.learningMode||ME?.m)||p.m=='Both')
+    w.push('Same learning mode');
+
+  if(p.a==(ME?.availability||ME?.a))
+    w.push('Both free '+p.a.toLowerCase());
+
+  return {
+    s:Math.min(s,98),
+    w
+  };
+}
+
+const toast=m=>{
+  const t=$('#toast');
+  t.textContent=m;
+  t.classList.add('on');
+
+  setTimeout(()=>{
+    t.classList.remove('on');
+  },2200);
+};
+
+function go(v,sec){
+
+  location.hash=v;
+
+  render(v);
+
+  if(sec)
+    setTimeout(()=>{
+      document
+        .getElementById(sec)
+        ?.scrollIntoView({behavior:'smooth'});
+    },50);
+  else
+    scrollTo(0,0);
+}
+
+const shell=(v,body,items)=>`
+<div class="shell">
+
+<aside class="side">
+
+${items.map(([k,l])=>`
+<a
+ class="${v==k?'on':''}"
+ onclick="go('${k}')"
+>${l}</a>
+`).join('')}
+
+<a onclick="logout()">Logout</a>
+
+</aside>
+
+<main class="main">
+${body}
+</main>
+
+</div>
+`;
+
+function logout(){
+  if(authToken)
+    api('/api/auth/logout',{method:'POST'}).catch(console.error);
+  authToken='';
+  ME=null;
+  P=[];
+  R=[];
+  RV=[];
+  CH={};
+  requirements=[];
+  applications=[];
+  localStorage.removeItem('skillswapToken');
+  role='student';
+  toast('Signed out');
+  go('home');
+}
+
+const SN=[
+ ['dash','Dashboard'],
+ ['find','Find Skills'],
+ ['reqs','Requests'],
+ ['msg','Messages'],
+ ['rev','Reviews']
+];
+
+const card=(p,i)=>{
+  const m={
+    s:p.matchScore||match(p).s,
+    w:p.matchReasons?.length?p.matchReasons:match(p).w
+  };
+
+  return `
+  <div class="card">
+
+    <div class="prof">
+
+      ${av(esc(p.n),i,i%2==0,p.profilePhoto)}
+
+      <div>
+        <b>        ${esc(p.n)}</b>
+        <br>
+        <span style="color:var(--mut)">
+          ${esc(p.s)} · ${esc(p.lv)} · ${esc(p.loc)}
+        </span>
+      </div>
+
+      <div class="score">
+        ${m.s}%
+        <br>
+        <small>Match</small>
+      </div>
+
+    </div>
+
+    <p>${esc(p.d)}</p>
+
+    <div>
+      ${p.t.map(x=>`
+        <span class="chip">${esc(x)}</span>
+      `).join('')}
+
+      <span class="chip ok">${esc(p.m)}</span>
+
+      <span class="chip w">
+        ★ ${Number(p.r).toFixed(1)}
+      </span>
+    </div>
+
+    <p style="font-size:13px;color:var(--mut)">
+      <b>Why:</b>
+      ${m.w.map(esc).join(' · ')||'Shared availability'}
+    </p>
+
+    <div class="row">
+
+      <button
+        class="btn g s"
+        onclick="toast('Opening profile')"
+      >
+        View Profile
+      </button>
+
+      ${ME?.role==='student'?`
+      <button
+        class="btn s"
+        onclick="conn(${Number(p.id)})"
+      >
+        Connect
+      </button>
+      `:''}
+
+    </div>
+
+  </div>
+  `;
+};
+
+async function conn(userId){
+  try{
+    const person=P.find(user=>Number(user.id)===Number(userId));
+    await api('/api/requests',{
+      method:'POST',
+      body:{receiverId:Number(userId),message:'Hi! I would like to swap skills with you.'}
+    });
+    toast('Request sent to '+(person?.n||'member'));
+    if(location.hash==='#reqs')
+      await loadPage('reqs');
+  }catch(error){
+    toast(error.message);
+  }
+}
+
+async function changeRequest(id,status){
+  try{
+    await api('/api/requests/'+id,{method:'PATCH',body:{status}});
+    toast(status==='Completed'?'Marked completed — you can leave a review':'Request '+status.toLowerCase());
+    await loadPage('reqs');
+  }catch(error){
+    toast(error.message);
+  }
+}
+
+async function applyToRequirement(id){
+  try{
+    await api('/api/requirements/'+id+'/apply',{method:'POST',body:{}});
+    toast('Application submitted');
+    await loadPage('reqs');
+  }catch(error){
+    toast(error.message);
+  }
+}
+
+async function changeApplication(id,status){
+  try{
+    await api('/api/applications/'+id,{method:'PATCH',body:{status}});
+    toast('Application '+status.toLowerCase());
+    await loadPage('clientapp');
+  }catch(error){
+    toast(error.message);
+  }
+}
+
+async function openConversation(userId,page='msg'){
+  cur=String(userId);
+  try{
+    const data=await api('/api/messages/'+Number(userId));
+    if(!CH[cur]){
+      const person=P.find(user=>Number(user.id)===Number(userId));
+      const application=applications.find(item=>Number(item.student_id)===Number(userId));
+      CH[cur]={user:person||{
+        id:Number(userId),
+        n:application?.student_name||'Member',
+        s:application?.skill||'SkillSwap member'
+      },messages:[]};
+    }
+    CH[cur].messages=data.messages;
+    render(page,true);
+  }catch(error){
+    toast(error.message);
+  }
+}
+
+async function submitReview(){
+  const reviewedId=Number($('#reviewUser')?.value);
+  const text=$('#rt')?.value.trim()||'';
+  if(!reviewedId||!rate||!text)
+    return toast('Choose a member, rating and feedback');
+  try{
+    await api('/api/reviews',{method:'POST',body:{reviewedId,rating:rate,text}});
+    rate=0;
+    toast('Review submitted');
+    await loadPage('rev');
+  }catch(error){
+    toast(error.message);
+  }
+}
+
+async function loadPage(page){
+  if(!ME||!authToken)
+    return;
+  try{
+    if(page==='dash'){
+      const [matches,requests,reviews]=await Promise.all([
+        api('/api/matches'),api('/api/requests'),api('/api/reviews')
+      ]);
+      P=matches.matches.map(fromApiUser);
+      R=requests.requests;
+      RV=reviews.reviews;
+    }else if(page==='find'){
+      await loadPeople();
+    }else if(page==='reqs'){
+      const results=await Promise.all([
+        api('/api/requests'),api('/api/requirements/all')
+      ]);
+      R=results[0].requests;
+      requirements=results[1].requirements;
+    }else if(page==='rev'){
+      const results=await Promise.all([api('/api/reviews'),api('/api/requests')]);
+      RV=results[0].reviews;
+      R=results[1].requests;
+    }else if(page==='clientdash'){
+      const results=await Promise.all([
+        api('/api/requirements'),api('/api/applications'),api('/api/users'),api('/api/requests')
+      ]);
+      requirements=results[0].requirements;
+      applications=results[1].applications;
+      P=results[2].users.map(fromApiUser);
+      R=results[3].requests;
+    }else if(page==='clientreq'){
+      const data=await api('/api/requirements');
+      requirements=data.requirements;
+    }else if(page==='clientapp'){
+      const data=await api('/api/applications');
+      applications=data.applications;
+    }else if(page==='msg'||page==='clientmsg'){
+      const requestData=await api('/api/requests');
+      R=requestData.requests;
+      if(ME.role==='client'){
+        const applicationData=await api('/api/applications');
+        applications=applicationData.applications;
+      }
+      const contacts={};
+      R.forEach(request=>{
+        const id=Number(request.sender_id)===Number(ME.id)?request.receiver_id:request.sender_id;
+        const name=Number(request.sender_id)===Number(ME.id)?request.receiver_name:request.sender_name;
+        contacts[id]={user:{id:Number(id),n:name,s:'SkillSwap member'},messages:[]};
+      });
+      applications.forEach(application=>{
+        contacts[application.student_id]={
+          user:{id:Number(application.student_id),n:application.student_name,s:application.skill,profilePhoto:application.profile_photo},
+          messages:[]
+        };
+      });
+      CH=contacts;
+      if(!CH[cur])
+        cur=Object.keys(CH)[0]||null;
+      if(cur){
+        const data=await api('/api/messages/'+Number(cur));
+        CH[cur].messages=data.messages;
+      }
+    }else if(page==='admin'){
+      const data=await api('/api/admin/stats');
+      window.adminStats=data;
+    }
+
+    if(location.hash==='#'+page)
+      render(page,true);
+  }catch(error){
+    toast(error.message);
+  }
+}
+
+const V={
+
+home:()=>`
+
+<section class="hero">
+
+<div class="wrap">
+
+<div>
+
+<h1>
+Learn. Share. Grow Together.
+</h1>
+
+<p>
+SkillSwap connects people who want to learn a skill with people who can teach it — and often the same person can do both.
+</p>
+
+<div class="row" style="justify-content:flex-start;gap:12px">
+
+<button
+class="btn n"
+style="background:#fff;color:var(--navy)"
+onclick="go('login')"
+>
+Find a Skill
+</button>
+
+<button
+class="btn o n"
+onclick="go('reg')"
+>
+Share Your Skill
+</button>
+
+</div>
+
+</div>
+
+<svg
+viewBox="0 0 360 260"
+role="img"
+aria-label="Two people exchanging skills"
+>
+
+<circle cx="90" cy="110" r="46" fill="#7aa2ff"/>
+<circle cx="270" cy="110" r="46" fill="#19b6ff"/>
+
+<rect
+x="40"
+y="165"
+width="100"
+height="70"
+rx="35"
+fill="#7aa2ff"
+/>
+
+<rect
+x="220"
+y="165"
+width="100"
+height="70"
+rx="35"
+fill="#19b6ff"
+/>
+
+<g fill="#fff">
+
+<rect
+x="105"
+y="30"
+width="70"
+height="34"
+rx="12"
+/>
+
+<rect
+x="185"
+y="60"
+width="76"
+height="34"
+rx="12"
+/>
+
+</g>
+
+<text
+x="140"
+y="52"
+font-size="14"
+fill="#0a1f55"
+text-anchor="middle"
+font-weight="700"
+>
+Python
+</text>
+
+<text
+x="223"
+y="82"
+font-size="14"
+fill="#0a1f55"
+text-anchor="middle"
+font-weight="700"
+>
+Canva
+</text>
+
+<path
+d="M140 140q40 30 90 0"
+stroke="#fff"
+stroke-width="4"
+fill="none"
+/>
+
+<path
+d="M225 133l8 7-10 4"
+stroke="#fff"
+stroke-width="4"
+fill="none"
+/>
+
+</svg>
+
+</div>
+
+</section>
+
+<section class="sec wrap" id="how">
+
+<h2>How SkillSwap works</h2>
+
+<p class="sub">
+Four steps from sign-up to your first session.
+</p>
+
+<div class="grid">
+
+${[
+ ['👤','Create your profile'],
+ ['🎯','Add skills you teach and want to learn'],
+ ['🤝','Find a compatible person'],
+ ['💬','Connect and exchange skills']
+].map(([i,t],k)=>`
+
+<div class="card">
+
+<div class="ic">${i}</div>
+
+<b>Step ${k+1}</b>
+
+<br>
+
+${t}
+
+</div>
+
+`).join('')}
+
+</div>
+
+</section>
+
+<section class="sec wrap" id="skills">
+
+<h2>Popular skills</h2>
+
+<p class="sub">
+What learners are searching for this week.
+</p>
+
+${[
+'Python',
+'UI Design',
+'Excel',
+'Video Editing',
+'Spanish',
+'Web Development',
+'Canva',
+'Public Speaking'
+].map(x=>`
+
+<a
+class="chip"
+style="font-size:14px;padding:8px 16px;cursor:pointer"
+onclick="go('login')"
+>
+${x}
+</a>
+
+`).join('')}
+
+</section>
+
+<section class="sec wrap">
+
+<h2>Featured skill providers</h2>
+
+<p class="sub">
+Highly rated teachers, ranked by reviews.
+</p>
+
+<div class="grid">
+
+${P.slice(0,3).map((p,i)=>`
+
+<div class="card prof">
+
+${av(esc(p.n),i,1,p.profilePhoto)}
+
+<div>
+<b>${p.n}</b>
+<br>
+${p.s} · ★ ${p.r}
+</div>
+
+</div>
+
+`).join('')||'<div class="card">Sign in to explore member profiles.</div>'}
+
+</div>
+
+</section>
+
+<section class="sec wrap">
+
+<h2>How skill matching works</h2>
+
+<p class="sub">
+Every profile gets a match score out of 100.
+</p>
+
+<div class="card">
+
+<p>
+Skills you want vs. skills they teach
+<b>(up to 30)</b> ·
+Skills they want vs. skills you teach
+<b>(up to 20)</b> ·
+Learning mode <b>(7)</b> ·
+Availability <b>(8)</b> ·
+Base compatibility <b>(30)</b>.
+We show the reasons beside every score.
+</p>
+
+</div>
+
+</section>
+
+<section class="sec wrap">
+
+<div class="grid">
+
+${[
+ ['2,480','Active students'],
+ ['120+','Skills available'],
+ ['5,900','Successful exchanges'],
+ ['310','Active clients']
+].map(([a,b])=>`
+
+<div class="card stat">
+
+<b>${a}</b>
+
+${b}
+
+</div>
+
+`).join('')}
+
+</div>
+
+</section>
+
+<section class="sec wrap">
+
+<h2>What members say</h2>
+
+<br>
+
+<div class="grid">
+
+${[
+ ['I learned Python and taught Canva in the same month.','Vedangi, BSc CS'],
+ ['Found a designer for our college fest in two days.','Kabir, Club Lead'],
+ ['The match reasons made choosing easy.','Ananya, BCom']
+].map(([q,a])=>`
+
+<div class="card">
+
+“${q}”
+
+<br><br>
+
+<b>${a}</b>
+
+</div>
+
+`).join('')}
+
+</div>
+
+</section>
+
+<section
+class="sec wrap"
+id="faq"
+style="max-width:780px"
+>
+
+<h2>FAQ</h2>
+
+<br>
+
+${[
+ ['Is SkillSwap free?','Yes. Skill swaps between students are free.'],
+ ['How do I get matched?','Add skills you teach and want to learn; we score compatible profiles.'],
+ ['Can clients hire students?','Yes. Clients post a requirement and students apply.'],
+ ['Is my data safe?','Passwords are hashed and routes are role-protected.']
+].map(([q,a])=>`
+
+<details>
+
+<summary>${q}</summary>
+
+<p>${a}</p>
+
+</details>
+
+`).join('')}
+
+</section>
+
+<footer>
+
+<div class="wrap">
+
+<div class="logo" style="color:#fff">
+SkillSwap
+</div>
+
+<p>
+Peer-to-peer skill exchange for students and clients.
+</p>
+
+<a onclick="go('home','how')">
+How it works
+</a>
+
+<a onclick="go('login')">
+Login
+</a>
+
+<a onclick="go('reg')">
+Register
+</a>
+
+<a onclick="toast('Twitter link coming soon')">
+Twitter
+</a>
+
+<a onclick="toast('LinkedIn link coming soon')">
+LinkedIn
+
+</a>
+
+<p>
+By Vedandi</>
+
+</div>
+
+</footer>
+
+`,
+
+/* =====================================================
+   LOGIN PAGE
+   ===================================================== */
+
+login:()=>`
+
+<div class="auth card">
+
+<h2>Welcome back</h2>
+
+<p class="sub">
+Sign in to continue. Your session is encrypted in transit.
+</p>
+
+<!-- STUDENT / CLIENT TABS -->
+
+<div class="tabs">
+
+<button
+type="button"
+class="${role=='student'?'on':''}"
+onclick="setRole('student')"
+>
+Student
+</button>
+
+<button
+type="button"
+class="${role=='client'?'on':''}"
+onclick="setRole('client')"
+>
+Client
+</button>
+
+</div>
+
+<form id="lf" novalidate>
+
+<label for="em">
+Email
+</label>
+
+<input
+id="em"
+type="email"
+autocomplete="email"
+placeholder="${role=='client'?'you@company.com':'you@college.edu'}"
+>
+
+<div class="err" id="e1"></div>
+
+<label for="pw">
+Password
+</label>
+
+<div class="row">
+
+<input
+id="pw"
+type="password"
+autocomplete="current-password"
+>
+
+<button
+type="button"
+class="btn g s n"
+onclick="togglePassword()"
+>
+Show
+</button>
+
+</div>
+
+<div class="err" id="e2"></div>
+
+<div
+class="row"
+style="margin:6px 0"
+>
+
+<label style="margin:0">
+
+<input
+type="checkbox"
+style="width:auto"
+>
+
+Remember me
+
+</label>
+
+<a
+style="text-align:right;color:var(--pri);cursor:pointer"
+onclick="toast('Reset link sent if the email exists')"
+>
+Forgot password?
+</a>
+
+</div>
+
+<button
+class="btn"
+style="width:100%"
+id="lb"
+type="submit"
+>
+Login as ${role}
+</button>
+
+</form>
+
+<button
+  class="btn g"
+  style="width:100%;margin-top:10px"
+  id="googleBtn"
+  type="button"
+  disabled
+>
+  Continue with Google
+</button>
+<div class="err" id="googleError" role="status" aria-live="polite"></div>
+
+<p style="text-align:center">
+
+New here?
+
+<a
+style="color:var(--pri);cursor:pointer;font-weight:700"
+onclick="go('reg')"
+>
+Create ${role=='student'?'Student':'Client'} Account
+</a>
+
+</p>
+
+<p
+style="text-align:center;font-size:12px;color:var(--mut)"
+>
+Sign in with the account you registered.
+</p>
+
+</div>
+
+`,
+
+/* =====================================================
+   STUDENT / CLIENT REGISTRATION
+   ===================================================== */
+
+reg:()=>`
+
+<div class="auth card" style="max-width:560px">
+
+<h2>Create account</h2>
+
+<div class="tabs">
+
+<button
+type="button"
+class="${role=='student'?'on':''}"
+onclick="setRole('student','reg')"
+>
+Student
+</button>
+
+<button
+type="button"
+class="${role=='client'?'on':''}"
+onclick="setRole('client','reg')"
+>
+Client
+</button>
+
+</div>
+
+${
+role=='student'
+
+?
+
+`
+
+<div class="bar">
+<i id="pg" style="width:33%"></i>
+</div>
+
+<form id="rf" novalidate>
+
+<div class="st">
+
+${f('Full name','text','rn')}
+
+${f('Email','email','re')}
+
+${f('Password (8+ characters)','password','rp')}
+
+${f('Confirm password','password','rc')}
+
+</div>
+
+<div class="st" hidden>
+
+${f('College / University','text','ru')}
+
+${f('Course','text','rcs')}
+
+<label>Year / Semester</label>
+
+<select>
+<option>Year 1</option>
+<option>Year 2</option>
+<option selected>Year 3</option>
+</select>
+
+<label>Profile photo</label>
+
+<input
+type="file"
+accept="image/*"
+>
+
+</div>
+
+<div class="st" hidden>
+
+${f('Skills I can teach (comma separated)','text','rt')}
+
+${f('Skills I want to learn','text','rl')}
+
+<label>Learning mode</label>
+
+<select>
+<option>Online</option>
+<option>Offline</option>
+<option>Both</option>
+</select>
+
+<label>Availability</label>
+
+<select>
+<option>Evenings</option>
+<option>Weekends</option>
+<option>Mornings</option>
+</select>
+
+<label>Short bio</label>
+
+<textarea rows="3"></textarea>
+
+</div>
+
+<div
+class="row"
+style="margin-top:14px"
+>
+
+<button
+type="button"
+class="btn g"
+id="pv"
+>
+Back
+</button>
+
+<button
+class="btn"
+id="nx"
+>
+Next
+</button>
+
+</div>
+
+</form>
+
+`
+
+:
+
+`
+
+<form id="cf" novalidate>
+
+${f('Name / Organization','text','cn')}
+
+${f('Email','email','ce')}
+
+${f('Password (8+ characters)','password','cp')}
+
+${f('Contact number','text','cc')}
+
+${f('Required skills','text','cr')}
+
+<label>Budget range</label>
+
+<select>
+<option>Under ₹5,000</option>
+<option>₹5,000–₹20,000</option>
+<option>₹20,000+</option>
+</select>
+
+<label>Timeline</label>
+
+<select>
+<option>Under 1 week</option>
+<option>1 month</option>
+<option>Flexible</option>
+</select>
+
+<label>Description</label>
+
+<textarea rows="3"></textarea>
+
+<br>
+
+<button
+class="btn"
+style="width:100%;margin-top:12px"
+>
+Create client account
+</button>
+
+</form>
+
+`
+
+}
+
+</div>
+
+`,
+
+/* =====================================================
+   STUDENT DASHBOARD
+   ===================================================== */
+
+dash:()=>shell(
+'dash',
+
+`
+
+<h2>
+Welcome back, ${esc(ME?.name||'')} 👋
+</h2>
+
+<p class="sub">
+You have
+${R.filter(request=>request.status=='Pending'&&Number(request.receiver_id)===Number(ME?.id)).length}
+pending requests.
+</p>
+
+<div class="grid">
+
+<div class="card">
+
+<b>Profile completion</b>
+
+<h3 style="margin-top:6px">
+80%
+</h3>
+
+<div class="bar">
+<i style="width:80%"></i>
+</div>
+
+</div>
+
+<div class="card">
+
+<b>Skills I teach</b>
+
+<br>
+
+${(ME?.teaches||[]).map(x=>`
+<span class="chip">${esc(x)}</span>
+`).join('')}
+
+</div>
+
+<div class="card">
+
+<b>Want to learn</b>
+
+<br>
+
+${(ME?.wants||[]).map(x=>`
+<span class="chip w">${esc(x)}</span>
+`).join('')}
+
+</div>
+
+<div class="card">
+
+<b>Active exchanges</b>
+
+<h3>
+${R.filter(request=>request.status=='Accepted').length}
+</h3>
+
+★ ${Number(ME?.rating||0).toFixed(1)} average rating
+
+</div>
+
+</div>
+
+<br>
+
+<h3>
+Recommended matches
+</h3>
+
+<div class="grid">
+
+${P.slice(0,2).map((p,i)=>card(p,i)).join('')||'<div class="card">Add your skills to discover matches.</div>'}
+
+</div>
+
+<br>
+
+<h3>
+Notifications
+</h3>
+
+<div class="card">
+${R.slice(0,3).map(request=>`<p>${esc(request.sender_name)}: ${esc(request.status)} request</p>`).join('')||'Your activity will appear here.'}
+</div>
+
+`,
+
+SN
+),
+
+/* =====================================================
+   CLIENT DASHBOARD
+   ===================================================== */
+
+clientdash:()=>shell(
+
+'clientdash',
+
+`
+
+<h2>
+Client Dashboard 👋
+</h2>
+
+<p class="sub">
+Manage your requirements, applications and student connections.
+</p>
+
+<div class="grid">
+
+<div class="card stat">
+
+<b>${requirements.filter(item=>item.status=='Active').length}</b>
+
+Active Requirements
+
+</div>
+
+<div class="card stat">
+
+<b>${applications.length}</b>
+
+Student Applications
+
+</div>
+
+<div class="card stat">
+
+<b>${R.filter(request=>request.status=='Accepted').length}</b>
+
+Active Connections
+
+</div>
+
+<div class="card stat">
+
+<b>${R.filter(request=>request.status=='Completed').length}</b>
+
+Completed Projects
+
+</div>
+
+</div>
+
+<br>
+
+<h3>
+Post a new requirement
+</h3>
+
+<div class="card">
+
+<div class="grid">
+
+<div>
+
+<label>
+Requirement title
+</label>
+
+<input
+id="clientReq"
+placeholder="e.g. Need a Python tutor"
+/>
+
+</div>
+
+<div>
+
+<label>
+Required skill
+</label>
+
+<input
+id="clientSkill"
+placeholder="e.g. Python"
+/>
+
+</div>
+
+</div>
+
+<label>
+Description
+</label>
+
+<textarea
+id="clientDescription"
+rows="4"
+placeholder="Describe what you need..."
+></textarea>
+
+<br>
+
+<button class="btn" id="postRequirement">
+Post Requirement
+</button>
+
+</div>
+
+<br>
+
+<h3>
+Recommended students
+</h3>
+
+<div class="grid">
+
+${P.slice(0,3).map((p,i)=>card(p,i)).join('')||'<div class="card">No student profiles yet.</div>'}
+
+</div>
+
+`,
+
+[
+ ['clientdash','Dashboard'],
+ ['clientreq','My Requirements'],
+ ['clientapp','Applications'],
+ ['clientmsg','Messages']
+]
+
+),
+
+/* =====================================================
+   CLIENT REQUIREMENTS
+   ===================================================== */
+
+clientreq:()=>shell(
+
+'clientreq',
+
+`
+
+<h2>
+My Requirements
+</h2>
+
+<br>
+
+<div class="grid">
+
+${requirements.map(item=>`
+
+<div class="card">
+
+<h3>${esc(item.title)}</h3>
+
+<span class="chip">${esc(item.skill)}</span>
+
+<span class="chip ${item.status=='Active'?'ok':'w'}">
+${esc(item.status)}
+</span>
+
+<p>
+${esc(item.description||'No description provided.')}
+</p>
+
+</div>
+
+`).join('')||'<div class="card">You have not posted any requirements yet.</div>'}
+
+</div>
+
+`,
+
+[
+ ['clientdash','Dashboard'],
+ ['clientreq','My Requirements'],
+ ['clientapp','Applications'],
+ ['clientmsg','Messages']
+]
+
+),
+
+/* =====================================================
+   CLIENT APPLICATIONS
+   ===================================================== */
+
+clientapp:()=>shell(
+
+'clientapp',
+
+`
+
+<h2>
+Student Applications
+</h2>
+
+<p class="sub">
+Students who applied to your requirements.
+</p>
+
+<div class="grid">
+
+${applications.map(application=>`
+
+<div class="card">
+
+<div class="prof">
+
+${av(esc(application.student_name),Number(application.student_id),true,application.profile_photo)}
+
+<div>
+
+<b>${esc(application.student_name)}</b>
+
+<br>
+
+<span style="color:var(--mut)">
+${esc(application.skill)} · ${esc(application.level)}
+</span>
+
+</div>
+
+</div>
+
+<p>
+${esc(application.title)} · ${esc(application.message||'No message included.')}
+</p>
+
+<div>
+
+<span class="chip ok">
+★ ${Number(application.rating||0).toFixed(1)}
+</span>
+
+<span class="chip">${esc(application.learning_mode)}</span>
+<span class="chip ${application.status=='Accepted'?'ok':'w'}">${esc(application.status)}</span>
+
+</div>
+
+<br>
+
+<div class="row">
+
+<button
+class="btn s"
+onclick="changeApplication(${Number(application.id)},'Accepted')"
+>
+Accept
+</button>
+
+<button
+class="btn g s"
+onclick="toast('${esc(application.student_email)}')"
+>
+View
+</button>
+
+</div>
+
+</div>
+
+`).join('')||'<div class="card">No applications yet.</div>'}
+
+</div>
+
+`,
+
+[
+ ['clientdash','Dashboard'],
+ ['clientreq','My Requirements'],
+ ['clientapp','Applications'],
+ ['clientmsg','Messages']
+]
+
+),
+
+/* =====================================================
+   CLIENT MESSAGES
+   ===================================================== */
+
+clientmsg:()=>shell(
+
+'clientmsg',
+
+`
+
+<h2>
+Client Messages
+</h2>
+
+<br>
+
+<div class="card chat">
+  <div class="cl">
+    ${Object.keys(CH).map(k=>`
+    <div class="${k==cur?'on':''} prof" onclick="openConversation(${Number(k)},'clientmsg')">
+      ${av(esc(CH[k].user.n),Number(k),true,CH[k].user.profilePhoto)}
+      <span><b>${esc(CH[k].user.n)}</b><br><small>${esc(CH[k].user.s||'SkillSwap member')}</small></span>
+    </div>
+    `).join('')||'<p>Applications and connections will appear here.</p>'}
+  </div>
+  <div class="cm">
+    <div class="msgs" id="cms">
+      ${(CH[cur]?.messages||[]).map(message=>`
+      <div class="m ${Number(message.sender_id)===Number(ME?.id)?'me':''}">
+        ${esc(message.body)}
+        <small>${esc(message.created_at)}</small>
+      </div>
+      `).join('')}
+    </div>
+    <form id="cmf" class="row" style="padding:10px;border-top:1px solid var(--line)">
+      <input id="cmi" placeholder="Write a message" ${cur?'':'disabled'}>
+      <button class="btn s n" ${cur?'':'disabled'}>Send</button>
+    </form>
+  </div>
+</div>
+
+`,
+
+[
+ ['clientdash','Dashboard'],
+ ['clientreq','My Requirements'],
+ ['clientapp','Applications'],
+ ['clientmsg','Messages']
+]
+
+),
+
+find:()=>shell(
+
+'find',
+
+`
+
+<h2>
+Find skills
+</h2>
+
+<div class="card">
+
+<div class="grid">
+
+<input
+id="q"
+placeholder="Search a skill or name"
+>
+
+<select id="fm">
+
+<option value="">
+Online / Offline
+</option>
+
+<option>
+Online
+</option>
+
+<option>
+Offline
+</option>
+
+</select>
+
+<select id="fl">
+
+<option value="">
+Any level
+</option>
+
+<option>
+Beginner
+</option>
+
+<option>
+Intermediate
+</option>
+
+<option>
+Advanced
+</option>
+
+</select>
+
+<select id="fa">
+
+<option value="">
+Any availability
+</option>
+
+<option>
+Evenings
+</option>
+
+<option>
+Weekends
+</option>
+
+<option>
+Mornings
+</option>
+
+</select>
+
+<select id="fr">
+
+<option value="0">
+Any rating
+</option>
+
+<option value="4.5">
+4.5+
+</option>
+
+<option value="4.8">
+4.8+
+</option>
+
+</select>
+
+</div>
+
+</div>
+
+<br>
+
+<div class="grid" id="res"></div>
+
+`,
+
+SN
+),
+
+reqs:()=>shell(
+
+'reqs',
+
+`
+
+<h2>
+Skill exchange requests
+</h2>
+
+<br>
+
+<div class="grid">
+
+${R.map(request=>{
+const incoming=Number(request.receiver_id)===Number(ME?.id);
+const personName=incoming?request.sender_name:request.receiver_name;
+return `
+
+<div class="card">
+
+<b>
+${incoming?'From ':'To '}${esc(personName)}
+</b>
+
+<span class="chip ${
+r.status=='Rejected'
+?'b'
+:request.status=='Pending'
+?'w'
+:'ok'
+}">
+${esc(request.status)}
+</span>
+
+<p>
+“${esc(request.message)}”
+</p>
+
+<div class="row">
+
+${
+incoming&&request.status=='Pending'
+
+?
+
+`
+
+<button
+class="btn s"
+onclick="changeRequest(${Number(request.id)},'Accepted')"
+>
+Accept
+</button>
+
+<button
+class="btn r s"
+onclick="changeRequest(${Number(request.id)},'Rejected')"
+>
+Reject
+</button>
+
+`
+
+:
+
+request.status=='Accepted'
+
+?
+
+`
+
+<button
+class="btn s"
+onclick="changeRequest(${Number(request.id)},'Completed')"
+>
+Mark completed
+</button>
+
+`
+
+:''
+}
+
+<button
+class="btn g s"
+onclick="toast('Viewing profile')"
+>
+View Profile
+</button>
+
+</div>
+
+</div>
+
+`}).join('')||'<div class="card">No skill exchange requests yet.</div>'}
+
+</div>
+
+<h3>Open client requirements</h3>
+<div class="grid">
+${requirements.map(item=>`
+<div class="card">
+  <h3>${esc(item.title)}</h3>
+  <span class="chip">${esc(item.skill)}</span>
+  <p>${esc(item.description||'No description provided.')}</p>
+  <p>Posted by ${esc(item.client_name)}</p>
+  <button class="btn s" onclick="applyToRequirement(${Number(item.id)})">Apply</button>
+</div>
+`).join('')||'<div class="card">No active client requirements.</div>'}
+</div>
+
+`,
+
+SN
+),
+
+msg:()=>shell(
+
+'msg',
+
+`
+
+<h2>
+Messages
+</h2>
+
+<br>
+
+<div class="card chat">
+
+<div class="cl">
+
+<input
+placeholder="Search conversations"
+style="border-radius:0;border:0;border-bottom:1px solid var(--line)"
+oninput="[...this.nextSibling.parentNode.querySelectorAll('div')].forEach(d=>d.hidden=!d.textContent.toLowerCase().includes(this.value.toLowerCase()))"
+>
+
+${Object.keys(CH).map(k=>`
+
+<div
+class="${k==cur?'on':''} prof"
+onclick="openConversation(${Number(k)},'msg')"
+>
+
+${av(esc(CH[k].user.n),Number(k),true,CH[k].user.profilePhoto)}
+
+<span>
+
+<b>${esc(CH[k].user.n)}</b>
+
+<br>
+
+<small style="color:var(--mut)">
+${esc(CH[k].messages.at(-1)?.body?.slice(0,22)||'Start a conversation')}…
+</small>
+
+</span>
+
+</div>
+
+`).join('')}
+
+</div>
+
+<div class="cm">
+
+<div class="msgs" id="ms">
+
+${(CH[cur]?.messages||[]).map(message=>`
+
+<div class="m ${Number(message.sender_id)===Number(ME?.id)?'me':''}">
+
+${esc(message.body)}
+
+<small>
+${esc(message.created_at)}
+</small>
+
+</div>
+
+`).join('')}
+
+</div>
+
+<form
+id="mf"
+class="row"
+style="padding:10px;border-top:1px solid var(--line)"
+>
+
+<button
+type="button"
+class="btn g s n"
+onclick="toast('Attachments are under development')"
+>
+📎
+</button>
+
+<input
+id="mi"
+placeholder="Write a message"
+>
+
+<button class="btn s n">
+Send
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+`,
+
+SN
+),
+
+rev:()=>shell(
+
+'rev',
+
+`
+
+<h2>
+Reviews & ratings
+</h2>
+
+<p class="sub">
+Average rating:
+★ ${(RV.length?RV.reduce((a,b)=>a+b.rating,0)/RV.length:0).toFixed(1)}
+from ${RV.length} reviews
+</p>
+
+<div class="grid">
+
+<div class="card">
+
+<b>
+Rate a completed exchange
+</b>
+
+<label for="reviewUser">Member</label>
+<select id="reviewUser">
+<option value="">Choose a member</option>
+${R.filter(request=>request.status=='Completed').map(request=>{
+const otherId=Number(request.sender_id)===Number(ME?.id)?request.receiver_id:request.sender_id;
+const otherName=Number(request.sender_id)===Number(ME?.id)?request.receiver_name:request.sender_name;
+return `<option value="${Number(otherId)}">${esc(otherName)}</option>`;
+}).join('')}
+</select>
+
+<div id="st">
+
+${[1,2,3,4,5].map(i=>`
+
+<button
+class="star ${i<=rate?'on':''}"
+onclick="rate=${i};render('rev')"
+aria-label="${i} stars"
+>
+★
+</button>
+
+`).join('')}
+
+</div>
+
+<textarea
+id="rt"
+rows="3"
+placeholder="Share feedback"
+></textarea>
+
+<br><br>
+
+<button class="btn s" onclick="submitReview()">
+Submit review
+</button>
+
+</div>
+
+${RV.map(review=>`
+
+<div class="card">
+
+<b>${esc(review.reviewer_name)}</b>
+
+<br>
+
+<span style="color:#f5b301">
+${'★'.repeat(review.rating)}
+</span>
+
+<p>
+${esc(review.text)}
+</p>
+
+</div>
+
+`).join('')}
+
+</div>
+
+`,
+
+SN
+),
+
+admin:()=>shell(
+
+'admin',
+
+`
+
+<h2>
+Admin overview
+</h2>
+
+<br>
+
+<div class="grid">
+
+${[
+ [window.adminStats?.students??0,'Students'],
+ [window.adminStats?.clients??0,'Clients'],
+ [window.adminStats?.skills??0,'Skills'],
+ [window.adminStats?.activeRequests??0,'Active exchanges'],
+ [window.adminStats?.completed??0,'Completed'],
+ [window.adminStats?.pending??0,'Pending requests']
+].map(([a,b])=>`
+
+<div class="card stat">
+
+<b>${a}</b>
+
+${b}
+
+</div>
+
+`).join('')}
+
+</div>
+
+<br>
+
+<div class="grid">
+
+<div class="card">
+
+<b>
+Exchanges per month
+</b>
+
+<svg
+viewBox="0 0 300 150"
+style="width:100%"
+>
+
+${[40,55,48,80,95,120].map((v,i)=>`
+
+<rect
+x="${12+i*48}"
+y="${140-v}"
+width="34"
+height="${v}"
+rx="6"
+fill="#2457f5"
+opacity="${.5+i*.1}"
+/>
+
+<text
+x="${29+i*48}"
+y="149"
+font-size="9"
+text-anchor="middle"
+fill="currentColor"
+>
+${['Apr','May','Jun','Jul','Aug','Sep'][i]}
+</text>
+
+`).join('')}
+
+</svg>
+
+</div>
+
+<div class="card">
+
+<b>
+Reports to review
+</b>
+
+<table>
+
+${[
+ ['Spam message','Pending'],
+ ['Fake profile','Open'],
+ ['Late no-show','Resolved']
+].map(([a,b])=>`
+
+<tr>
+
+<td>${a}</td>
+
+<td>
+
+<span
+class="chip ${b=='Resolved'?'ok':'w'}"
+>
+${b}
+</span>
+
+</td>
+
+</tr>
+
+`).join('')}
+
+</table>
+
+</div>
+
+</div>
+
+`,
+
+[
+ ['admin','Analytics'],
+ ['admin','Students'],
+ ['admin','Clients'],
+ ['admin','Reports']
+]
+
+)
+
+};
+
+/* =====================================================
+   FORM FIELD HELPER
+   ===================================================== */
+
+function f(l,t,i){
+
+  return `
+  <label for="${i}">
+    ${l}
+  </label>
+
+  <input
+    id="${i}"
+    type="${t}"
+  >
+
+  <div class="err"></div>
+  `;
+}
+
+/* =====================================================
+   ROLE SWITCH
+   THIS FIXES THE CLIENT BUTTON
+   ===================================================== */
+
+function setRole(newRole,page='login'){
+
+  role=newRole;
+
+  render(page);
+
+  console.log('Selected role:',role);
+}
+
+/* =====================================================
+   PASSWORD SHOW/HIDE
+   ===================================================== */
+
+function togglePassword(){
+
+  const pw=$('#pw');
+
+  if(!pw) return;
+
+  pw.type=
+    pw.type==='password'
+    ?'text'
+    :'password';
+}
+
+/* =====================================================
+   RENDER
+   ===================================================== */
+
+function render(v,hydrated=false){
+
+  if(!V[v]){
+    v='home';
+  }
+
+  const protectedPages=[
+    'dash','find','reqs','msg','rev','admin',
+    'clientdash','clientreq','clientapp','clientmsg'
+  ];
+  if(protectedPages.includes(v)&&!authToken)
+    v='login';
+  if(v.startsWith('client')&&ME&&ME.role!=='client')
+    v='dash';
+  if(['dash','find','reqs','msg','rev'].includes(v)&&ME?.role==='client')
+    v='clientdash';
+  if(v==='admin'&&ME?.role!=='admin')
+    v='dash';
+
+  $('#navr').innerHTML=
+
+  [
+    'dash',
+    'find',
+    'reqs',
+    'msg',
+    'rev',
+    'admin',
+    'clientdash',
+    'clientreq',
+    'clientapp',
+    'clientmsg'
+  ].includes(v)
+
+  ?
+
+  `
+
+  <span class="chip ok">
+
+  ${
+    v.startsWith('client')
+    ?'Client'
+    :v=='admin'
+    ?'Admin'
+    :'Student'
+  }
+
+  </span>
+
+  `
+
+  :
+
+  `
+
+  <button
+    class="btn o s"
+    onclick="go('login')"
+  >
+    Login
+  </button>
+
+  <button
+    class="btn s"
+    onclick="go('reg')"
+  >
+    Register
+  </button>
+
+  `;
+
+  $('#app').innerHTML=V[v]();
+
+  bind(v);
+  if(!hydrated&&protectedPages.includes(v)&&v!=='find')
+    void loadPage(v);
+}
+
+/* =====================================================
+   EVENT BINDINGS
+   ===================================================== */
+
+function bind(v){
+
+  /* =========================
+     LOGIN
+     ========================= */
+
+  if(v=='login'){
+
+    const form=$('#lf');
+    void configureGoogleButton();
+    $('#googleBtn').onclick=startGoogleSignIn;
+
+    form.onsubmit=async e=>{
+
+      e.preventDefault();
+
+      let ok=1;
+
+      const em=$('#em').value.trim();
+      const pw=$('#pw');
+
+      $('#e1').textContent=
+        /^\S+@\S+\.\S+$/.test(em)
+        ?''
+        :(ok=0,'Enter a valid email address.');
+
+      $('#e2').textContent=
+        pw.value.length>=6
+        ?''
+        :(ok=0,'Password must be at least 6 characters.');
+
+      if(!ok)
+        return;
+
+      const b=$('#lb');
+
+      b.textContent='Signing in…';
+      b.disabled=true;
+
+      try{
+        const data=await api('/api/auth/login',{
+          method:'POST',
+          body:{email:em,password:pw.value,role}
+        });
+        authToken=data.token;
+        localStorage.setItem('skillswapToken',authToken);
+        ME=fromApiUser(data.user);
+        role=ME.role;
+        go(role==='client'?'clientdash':role==='admin'?'admin':'dash');
+      }catch(error){
+        $('#e2').textContent=error.message;
+        b.textContent='Login';
+        b.disabled=false;
+      }
+
+    };
+
+  }
+
+  /* =========================
+     STUDENT REGISTRATION
+     ========================= */
+
+  if(v=='reg' && role=='student'){
+
+    let s=0;
+
+    const st=document.querySelectorAll('.st');
+
+    const show=()=>{
+
+      st.forEach((x,i)=>{
+        x.hidden=i!=s;
+      });
+
+      $('#pg').style.width=
+        (s+1)*33.3+'%';
+
+      $('#nx').textContent=
+        s==2
+        ?'Create account'
+        :'Next';
+
+      $('#pv').style.visibility=
+        s
+        ?'visible'
+        :'hidden';
+    };
+
+    show();
+
+    $('#pv').onclick=()=>{
+
+      if(s>0){
+        s--;
+        show();
+      }
+
+    };
+
+    $('#rf').onsubmit=async e=>{
+
+      e.preventDefault();
+
+      let ok=1;
+
+      st[s]
+      .querySelectorAll('input:not([type=file])')
+      .forEach(i=>{
+
+        const bad=
+          !i.value.trim() ||
+          (
+            i.type=='email' &&
+            !/^\S+@\S+\.\S+$/.test(i.value)
+          ) ||
+          (
+            i.id=='rp' &&
+            i.value.length<8
+          ) ||
+          (
+            i.id=='rc' &&
+            i.value!=$('#rp').value
+          );
+
+        i.classList.toggle('bad',bad);
+
+        i.nextSibling.textContent=
+          bad
+          ?'Check this field.'
+          :'';
+
+        if(bad)
+          ok=0;
+
+      });
+
+      if(!ok)
+        return;
+
+      if(s<2){
+
+        s++;
+
+        show();
+
+      }else{
+        const selects=st[2].querySelectorAll('select');
+        const requirementSkills=value=>value.split(',').map(skill=>skill.trim()).filter(Boolean);
+        try{
+          const photoFile=st[1].querySelector('input[type=file]').files[0];
+          if(photoFile&&photoFile.size>1024*1024)
+            return toast('Profile photo must be under 1 MB');
+          const profilePhoto=photoFile?await new Promise((resolve,reject)=>{
+            const reader=new FileReader();
+            reader.onload=()=>resolve(reader.result);
+            reader.onerror=()=>reject(new Error('Could not read profile photo'));
+            reader.readAsDataURL(photoFile);
+          }):'';
+          await api('/api/auth/register',{
+            method:'POST',
+            body:{
+              name:$('#rn').value.trim(),
+              email:$('#re').value.trim(),
+              password:$('#rp').value,
+              role:'student',
+              organization:$('#ru').value.trim(),
+              course:$('#rcs').value.trim(),
+              year:st[1].querySelector('select').value,
+              profilePhoto,
+              teaches:requirementSkills($('#rt').value),
+              wants:requirementSkills($('#rl').value),
+              learningMode:selects[0].value,
+              availability:selects[1].value,
+              bio:st[2].querySelector('textarea').value.trim()
+            }
+          });
+          toast('Account created. Please sign in.');
+          role='student';
+          go('login');
+        }catch(error){
+          toast(error.message);
+        }
+
+      }
+
+    };
+
+  }
+
+  /* =========================
+     CLIENT REGISTRATION
+     ========================= */
+
+  if(v=='reg' && role=='client'){
+
+    $('#cf').onsubmit=async e=>{
+
+      e.preventDefault();
+
+      let ok=1;
+
+      document
+      .querySelectorAll('#cf input')
+      .forEach(i=>{
+
+        const bad=
+          !i.value.trim() ||
+          (
+            i.type=='email' &&
+            !/^\S+@\S+\.\S+$/.test(i.value)
+          ) ||
+          (
+            i.type=='password' &&
+            i.value.length<8
+          );
+
+        i.classList.toggle('bad',bad);
+
+        i.nextSibling.textContent=
+          bad
+          ?'Check this field.'
+          :'';
+
+        if(bad)
+          ok=0;
+
+      });
+
+      if(!ok)
+        return;
+      const fields=$('#cf');
+      const selects=fields.querySelectorAll('select');
+      const skill=$('#cr').value.trim();
+      try{
+        await api('/api/auth/register',{
+          method:'POST',
+          body:{
+            name:$('#cn').value.trim(),
+            email:$('#ce').value.trim(),
+            password:$('#cp').value,
+            role:'client',
+            organization:$('#cn').value.trim(),
+            phone:$('#cc').value.trim(),
+            initialRequirement:{
+              title:'Hiring for '+skill,
+              skill,
+              description:fields.querySelector('textarea').value.trim(),
+              budget:selects[0].value,
+              timeline:selects[1].value
+            }
+          }
+        });
+        toast('Account created. Please sign in.');
+        role='client';
+        go('login');
+      }catch(error){
+        toast(error.message);
+      }
+
+    };
+
+  }
+
+  /* =========================
+     FIND SKILLS
+     ========================= */
+
+  if(v=='find'){
+
+    let searchTimer;
+    const draw=async()=>{
+    const params=new URLSearchParams({
+      q:$('#q').value.trim(),
+      mode:$('#fm').value,
+      level:$('#fl').value,
+      availability:$('#fa').value,
+      rating:$('#fr').value
+    });
+    try{
+      $('#res').innerHTML='<div class="card">Searching…</div>';
+      await loadPeople(params.toString());
+      $('#res').innerHTML=P.map((person,index)=>card(person,index)).join('')||
+        '<div class="card">No matches. Try removing a filter.</div>';
+    }catch(error){
+      $('#res').innerHTML='<div class="card">'+esc(error.message)+'</div>';
+    }
+    };
+
+    document
+    .querySelectorAll('#q,#fm,#fl,#fa,#fr')
+    .forEach(e=>{
+    e.oninput=()=>{
+      clearTimeout(searchTimer);
+      searchTimer=setTimeout(draw,180);
+    };
+    e.onchange=draw;
+    });
+
+    draw();
+
+  }
+
+  /* =========================
+     MESSAGES
+     ========================= */
+
+  if(v=='msg'){
+
+    const ms=$('#ms');
+
+    ms.scrollTop=1e5;
+
+    $('#mf').onsubmit=async e=>{
+
+      e.preventDefault();
+
+      const t=$('#mi').value.trim();
+
+      if(!t)
+        return;
+
+      if(!cur)
+        return toast('Send a connection request before messaging.');
+      try{
+        await api('/api/messages',{
+          method:'POST',
+          body:{receiverId:Number(cur),body:t}
+        });
+        await openConversation(Number(cur),'msg');
+      }catch(error){
+        toast(error.message);
+      }
+
+    };
+
+  }
+
+  if(v==='clientdash'){
+    $('#postRequirement').onclick=async()=>{
+      const title=$('#clientReq').value.trim();
+      const skill=$('#clientSkill').value.trim();
+      if(!title||!skill)
+        return toast('Enter a requirement title and skill');
+      try{
+        await api('/api/requirements',{
+          method:'POST',
+          body:{title,skill,description:$('#clientDescription').value.trim()}
+        });
+        toast('Requirement posted');
+        await loadPage('clientdash');
+      }catch(error){
+        toast(error.message);
+      }
+    };
+  }
+
+  if(v==='clientmsg'){
+    const messages=$('#cms');
+    if(messages)
+      messages.scrollTop=messages.scrollHeight;
+    $('#cmf').onsubmit=async e=>{
+      e.preventDefault();
+      const body=$('#cmi').value.trim();
+      if(!body||!cur)
+        return;
+      try{
+        await api('/api/messages',{method:'POST',body:{receiverId:Number(cur),body}});
+        await openConversation(Number(cur),'clientmsg');
+      }catch(error){
+        toast(error.message);
+      }
+    };
+  }
+
+}
+
+/* =====================================================
+   CHATBOT
+   ===================================================== */
+
+const ans={
+  'Find a skill':
+    'Open Find Skills, search or filter, then press Connect.',
+
+  'Find a study/skill partner':
+    'Check My Matches: anyone above 80% teaches what you want and wants what you teach.',
+
+  'How SkillSwap works':
+    'Create a profile, list skills, get matched, then connect and swap.',
+
+  'How to create a profile':
+    'Choose Register, pick Student or Client, and finish the 3 steps.',
+
+  'How to send a request':
+    'Press Connect on any profile. Track it under Requests.',
+
+  'Contact support':
+    'Email support@skillswap.com — we reply within a day.'
+};
+
+function say(t,me){
+
+  $('#bm').insertAdjacentHTML(
+    'beforeend',
+    `<div class="m ${me?'me':''}">${t}</div>`
+  );
+
+  $('#bm').scrollTop=1e5;
+}
+
+function ask(q){
+
+  say(q,1);
+
+  setTimeout(()=>{
+
+    say(
+      ans[q] ||
+      'I can help with finding skills, profiles and requests. Try a quick option below.'
+    );
+
+  },400);
+}
+
+function bt(){
+
+  const w=$('#bw');
+
+  w.classList.toggle('open');
+
+  if(!$('#bm').children.length){
+
+    say(
+      'Hi! 👋 How can I help you today?'
+    );
+
+    $('#bq').innerHTML=
+      Object.keys(ans)
+      .map(k=>`<button>${k}</button>`)
+      .join('');
+
+    $('#bq').onclick=e=>{
+
+      if(e.target.tagName=='BUTTON')
+        ask(e.target.textContent);
+
+    };
+
+  }
+
+}
+
+$('#bf').onsubmit=e=>{
+
+  e.preventDefault();
+
+  const t=$('#bi').value.trim();
+
+  if(t){
+
+    ask(
+      Object.keys(ans)
+      .find(k=>
+        t.toLowerCase()
+        .includes(
+          k.split(' ').pop().toLowerCase()
+        )
+      ) || t
+    );
+
+    $('#bi').value='';
+
+  }
+
+};
+
+/* =====================================================
+   HASH ROUTING
+   ===================================================== */
+
+onhashchange=()=>{
+
+  const h=location.hash.slice(1).split('?')[0];
+
+  if(V[h])
+    render(h);
+
+};
+
+render(V[location.hash.slice(1)]?location.hash.slice(1):'home');
+
+async function startApp(){
+  const hashParts=location.hash.slice(1).split('?');
+  const params=new URLSearchParams(hashParts[1]||'');
+  const ticket=params.get('google_ticket');
+  const googleError=params.get('google_error');
+  if(ticket){
+    history.replaceState(null,'',location.pathname+location.search+'#login');
+    try{
+      const data=await api('/api/auth/google/exchange',{
+        method:'POST',
+        body:{ticket}
+      });
+      authToken=data.token;
+      localStorage.setItem('skillswapToken',authToken);
+      ME=fromApiUser(data.user);
+      role=ME.role;
+      go(role==='client'?'clientdash':'dash');
+    }catch(error){
+      render('login');
+      toast(error.message);
+    }
+    return;
+  }
+  if(googleError){
+    history.replaceState(null,'',location.pathname+location.search+'#login');
+    const messages={
+      cancelled:'Google sign-in was cancelled.',
+      state:'Google sign-in expired or could not be verified. Please try again.',
+      account:'This Google account could not be linked to your SkillSwap account.',
+      config:'Google sign-in is not configured. Check the server OAuth environment variables.',
+      failed:'Google sign-in failed. Please try again.'
+    };
+    toast(messages[googleError]||messages.failed);
+  }
+  if(!authToken)
+    return;
+  try{
+    const data=await api('/api/auth/me');
+    ME=fromApiUser(data.user);
+    role=ME.role;
+    const requested=location.hash.slice(1);
+    const defaultPage=role==='client'?'clientdash':'dash';
+    const page=V[requested]&&requested!=='home'?requested:defaultPage;
+    if(!location.hash||location.hash==='#home')
+      location.hash=page;
+    render(page);
+  }catch(error){
+    toast('Your saved session has expired. Please sign in again.');
+    render('login');
+  }
+}
+
+void startApp();
+
+</script>
+
+</body>
+</html>
